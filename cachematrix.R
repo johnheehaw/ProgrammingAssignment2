@@ -4,23 +4,26 @@
 ##  This function creates a special "matrix" object that can cache its inverse.
 
 makeCacheMatrix <- function(x = matrix()) {
-        # see example Cachisn the Mean of a Vector
-        m <- NULL   # m to be cached inverse matrix
+        # see example Caching the Mean of a Vector
+        # this program is almost identical, except matrix operations instead of
+        # vector
+        m <- NULL   # m will be the cached inverse matrix
         
-        # 1. set the value of the matrix
+        # 1. set the value of the matrix (similar to example)
         set <- function(y) {
                 x <<- y
                 m <<- NULL
         }
-        # 2. get the value of the matrix
+        # 2. get the value of the matrix (as in example)
         get <- function() x
         
         # 3. set the value of the inverse matrix
         setinv <- function(inverse) m <<- inverse
+
         # 4. get the value of the inverse matrix
         getinv <- function() m
         
-        # 5. return the matrix functions
+        # return the matrix functions
         list(set = set, 
              get = get, 
              setinv = setinv, 
@@ -39,17 +42,18 @@ cacheSolve <- function(x, ...) {
         ## see example cachemean        
         m <- x$getinv()
         
-        #  has the inverse already been calculated?
+        #  has the inverse already been calculated? If so, returns it
         if (!is.null(m)) {
                 message("getting cached data")
                 return(m)
         }
         
-        # since not calculate
+        # since not calculate it
+        # "if X is a square invertible matrix, then solve(X) returns its inverse"
         data <- x$get()
         m <- solve(data, ...)
         
-        # sets the value of the mean in the cache via the setinv function.
+        # sets the value of the inverse in the cache using setinv function from above.
         x$setinv(m)
         m
 }
